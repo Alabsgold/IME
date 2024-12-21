@@ -3,10 +3,23 @@ const app = express();
 
 app.use(express.json());
 
+// POST route
 app.post('/track-imei', (req, res) => {
     const { imei } = req.body;
 
     // Validate IMEI format (e.g., length of 15 digits)
+    if (/^\d{15}$/.test(imei)) {
+        res.send(`Tracking details for IMEI: ${imei}`);
+    } else {
+        res.status(400).send('Invalid IMEI format. Please provide a 15-digit number.');
+    }
+});
+
+// GET route
+app.get('/track-:imei', (req, res) => {
+    const { imei } = req.params;
+
+    // Validate IMEI format
     if (/^\d{15}$/.test(imei)) {
         res.send(`Tracking details for IMEI: ${imei}`);
     } else {
